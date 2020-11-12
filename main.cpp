@@ -1,20 +1,19 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include "displaymap.h"
 
-struct Point
-{
-  int x, y;
-  Point(int x_entry, int y_entry) : x(x_entry), y(y_entry) {}
-};
+using namespace std;
 
-vector<vector<Point>> get_map(std::string filename)
+vector<string> get_map(string filename)
 {
-	vector<vector<Point>> map;
+	vector<string> map;
+        string s;
 	ifstream grab(filename);
-	while(getline(grab))
+	while(getline(grab, s))
 	{
-		//load stuff into the map vector
+		map.push_back(s);
 	}
 	grab.close();
 	return map;
@@ -22,5 +21,13 @@ vector<vector<Point>> get_map(std::string filename)
 
 int main (int argc, char** argv) 
 {
-  std::cout << "Placeholder!" << std::endl;
+  if (argc < 2) {
+    cout << "Please enter in a map file." << endl;
+    return -1;
+  }
+  
+  DisplayMap view(get_map(argv[1]));
+  view.print();
+  view.show_start_obstacles();
+  view.show_finish_obstacles();
 }
