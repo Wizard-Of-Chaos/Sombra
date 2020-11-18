@@ -1,13 +1,16 @@
 CC = g++
 CFLAGS = -g -Wall
 
-Euclidean: displaymap.o
-	$(CC) -o Euclidean main.cpp displaymap.o
+Euclidean: displaymap.o min_heap.o
+	$(CC) -o Euclidean main.cpp displaymap.o min_heap.o
 
 displaymap.o: displaymap.cpp
 	$(CC) -c displaymap.cpp
 
+min_heap.o: min_heap.cpp
+	$(CC) -c min_heap.cpp
 clean:
 	$ rm *.o Euclidean
 	$(CC) -c displaymap.cpp
-	$(CC) -o Euclidean main.cpp displaymap.o
+	$(CC) -c min_heap.cpp
+	$(CC) -o Euclidean main.cpp displaymap.o min_heap.o

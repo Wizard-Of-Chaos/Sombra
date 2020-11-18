@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include "displaymap.h"
+#include "min_heap.h"
 
 using namespace std;
 
