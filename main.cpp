@@ -38,7 +38,7 @@ int main (int argc, char** argv)
   while(getline(checker, check)) {
     for(char c : check) {
       if (c == 'F') is_fin = true;
-      if (c == 'S') is_fin = true;
+      if (c == 'S') is_start = true;
     }
   }
   if(!is_start or !is_fin) {
