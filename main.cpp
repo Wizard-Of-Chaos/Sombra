@@ -25,17 +25,17 @@ DisplayMap get_map(string filename)
 	return map;
 }
 
-double heuristic(x)
+double heuristic(double x)
 {
 
 }
 
-double gScore(x)
+double gScore(double x)
 {
 
 }
 
-double fScore(x)
+double fScore() //probably takes 2 args for the H and G score
 {
 
 }
