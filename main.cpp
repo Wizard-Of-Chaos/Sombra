@@ -25,6 +25,22 @@ DisplayMap get_map(string filename)
 	return map;
 }
 
+double heuristic(x)
+{
+
+}
+
+double gScore(x)
+{
+
+}
+
+double fScore(x)
+{
+
+}
+
+
 int main (int argc, char** argv) 
 {
   if (argc < 2) {
