@@ -38,15 +38,14 @@ char MapPoint::type()
 
 //----------------DisplayMap functions-------------------
 
-DisplayMap::DisplayMap(vector<string> map) : m_map(map)
+DisplayMap::DisplayMap(vector<string> map, int height, int width) : m_map(map), m_height(height), m_width(width)
 {
-  int height = 0;
-  int width = map[0].size(); //Since all strings should be the same size, otherwise width is sorta meaningless.
+  int h_pos = 0;
+  int w_pos = 0;
   for(string s : map) {
-    int w_pos = 0;
     vector<MapPoint> line;
     for(char c : s) {
-      MapPoint p(w_pos, height, c);
+      MapPoint p(w_pos, h_pos, c);
       line.push_back(p);
       if (c == 'S') {
         m_start_coords = p;
@@ -57,7 +56,7 @@ DisplayMap::DisplayMap(vector<string> map) : m_map(map)
       ++w_pos;
     } //Individual characters in string handled.
     m_map_details.push_back(line);
-    ++height;
+    ++h_pos;
   } //Detailed map should now be filled out in map points.
   cout << "DEBUGGING" << endl;
   cout << "Start X: " << m_start_coords.x() << " Start Y: " << m_start_coords.y() << endl;
@@ -121,5 +120,5 @@ void DisplayMap::print()
   for (string s : m_map) {
     cout << s << endl;
   }
-  cout << "Height / Width: " << m_map.size() << " " << m_map[0].length() << endl;
+  cout << "Height / Width: " << m_height << " " << m_width << endl;
 }

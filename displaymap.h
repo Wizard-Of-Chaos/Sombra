@@ -25,10 +25,12 @@ class DisplayMap
   private:
     std::vector<std::string> m_map;
     std::vector<std::vector<MapPoint>> m_map_details;
+    int m_height;
+    int m_width;
     MapPoint m_start_coords;
     MapPoint m_end_coords;
   public:
-    DisplayMap(std::vector<std::string> map);
+    DisplayMap(std::vector<std::string> map, int height, int width);
     ~DisplayMap();
     void show_start_obstacles();
     void show_finish_obstacles();
