@@ -74,16 +74,16 @@ void DisplayMap::show_start_obstacles()
   int obstaclecount = 0;
   vector<MapPoint> coords;
   if (m_start_coords.x() > 0) {
-    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() + 1]);
+    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() - 1]);
   }
   if (m_start_coords.x() < m_map[0].length()) {
-    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() - 1]);
+    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() + 1]);
   } 
   if (m_start_coords.y() > 0) {
-    coords.push_back(m_map_details[m_start_coords.y() + 1][m_start_coords.x()]);
+    coords.push_back(m_map_details[m_start_coords.y() - 1][m_start_coords.x()]);
   }
   if (m_start_coords.y() < m_map.size()) {
-    coords.push_back(m_map_details[m_start_coords.y() - 1][m_start_coords.x()]);
+    coords.push_back(m_map_details[m_start_coords.y() + 1][m_start_coords.x()]);
   	}
   for (MapPoint p : coords) {
     	if (p.type() == '#')
@@ -98,16 +98,16 @@ void DisplayMap::show_finish_obstacles()
   int obstaclecount = 0;
   vector<MapPoint> coords;
   if (m_end_coords.x() > 0) {
-    coords.push_back(m_map_details[m_end_coords.y()][m_end_coords.x() + 1]);
-  }
-  if (m_end_coords.x() < m_map[0].length()) {
     coords.push_back(m_map_details[m_end_coords.y()][m_end_coords.x() - 1]);
   }
+  if (m_end_coords.x() < m_map[0].length()) {
+    coords.push_back(m_map_details[m_end_coords.y()][m_end_coords.x() + 1]);
+  }
   if (m_end_coords.y() > 0) {
-    coords.push_back(m_map_details[m_end_coords.y() + 1][m_end_coords.x()]);
+    coords.push_back(m_map_details[m_end_coords.y() - 1][m_end_coords.x()]);
   }
   if (m_end_coords.y() < m_map.size()) {
-    coords.push_back(m_map_details[m_end_coords.y() - 1][m_end_coords.x()]);
+    coords.push_back(m_map_details[m_end_coords.y() + 1][m_end_coords.x()]);
   }
   for (MapPoint p : coords) {
     if (p.type() == '#')
