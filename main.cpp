@@ -25,9 +25,9 @@ DisplayMap get_map(string filename)
 	return map;
 }
 
-double heuristic(double x)
+double heuristic(MapPoint start, MapPoint end)
 {
-
+  return abs(start.x() - end.x()) + abs(start.y() - end.y());
 }
 
 double gScore(double x)
@@ -40,6 +40,10 @@ double fScore() //probably takes 2 args for the H and G score
 
 }
 
+void a_star(DisplayMap& map)
+{
+
+}
 
 int main (int argc, char** argv) 
 {

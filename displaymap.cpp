@@ -69,25 +69,32 @@ DisplayMap::~DisplayMap()
   //Yeah, definitely habit.
 }
 
+
+vector<MapPoint> DisplayMap::neighbors(MapPoint point) //Why the hell wasn't this a method from the start? Christ am I dumb.
+{
+  vector<MapPoint> neighbors;
+  if (point.x() > 0) {
+    neighbors.push_back(m_map_details[point.y()][point.x() - 1]);
+  }
+  if (point.x() < m_map[0].length()) {
+    neighbors.push_back(m_map_details[point.y()][point.x() + 1]);
+  } 
+  if (point.y() > 0) {
+    neighbors.push_back(m_map_details[point.y() - 1][point.x()]);
+  }
+  if (point.y() < m_map.size()) {
+    neighbors.push_back(m_map_details[point.y() + 1][point.x()]);
+  	}
+  return neighbors;
+}
+
 void DisplayMap::show_start_obstacles()
 {
   int obstaclecount = 0;
-  vector<MapPoint> coords;
-  if (m_start_coords.x() > 0) {
-    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() - 1]);
-  }
-  if (m_start_coords.x() < m_map[0].length()) {
-    coords.push_back(m_map_details[m_start_coords.y()][m_start_coords.x() + 1]);
-  } 
-  if (m_start_coords.y() > 0) {
-    coords.push_back(m_map_details[m_start_coords.y() - 1][m_start_coords.x()]);
-  }
-  if (m_start_coords.y() < m_map.size()) {
-    coords.push_back(m_map_details[m_start_coords.y() + 1][m_start_coords.x()]);
-  	}
+  vector<MapPoint> coords = neighbors(m_start_coords);
   for (MapPoint p : coords) {
     	if (p.type() == '#')
-      		++obstaclecount;
+      	  ++obstaclecount;
   }
   cout << "There are " << obstaclecount << " obstacle(s) next to the start." << endl;
 }
@@ -96,19 +103,7 @@ void DisplayMap::show_start_obstacles()
 void DisplayMap::show_finish_obstacles()
 {
   int obstaclecount = 0;
-  vector<MapPoint> coords;
-  if (m_end_coords.x() > 0) {
-    coords.push_back(m_map_details[m_end_coords.y()][m_end_coords.x() - 1]);
-  }
-  if (m_end_coords.x() < m_map[0].length()) {
-    coords.push_back(m_map_details[m_end_coords.y()][m_end_coords.x() + 1]);
-  }
-  if (m_end_coords.y() > 0) {
-    coords.push_back(m_map_details[m_end_coords.y() - 1][m_end_coords.x()]);
-  }
-  if (m_end_coords.y() < m_map.size()) {
-    coords.push_back(m_map_details[m_end_coords.y() + 1][m_end_coords.x()]);
-  }
+  vector<MapPoint> coords = neighbors(m_end_coords);
   for (MapPoint p : coords) {
     if (p.type() == '#')
       ++obstaclecount;
@@ -123,3 +118,4 @@ void DisplayMap::print()
   }
   cout << "Height / Width: " << m_height << " " << m_width << endl;
 }
+

@@ -32,6 +32,7 @@ class DisplayMap
   public:
     DisplayMap(std::vector<std::string> map, int height, int width);
     ~DisplayMap();
+    std::vector<MapPoint> neighbors(MapPoint point);
     void show_start_obstacles();
     void show_finish_obstacles();
     void print();
