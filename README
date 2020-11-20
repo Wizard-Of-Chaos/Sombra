@@ -1,0 +1,12 @@
+This generates an A* pathfinding algorithm. It finds a path through an ASCII map of '.', '#' from S to F.
+
+At compilation time it generates two different executables, Manhattan and Euclidean.
+The program runs a different heuristic from the same file based off which of the two is being run.
+
+To run it:
+./Euclidean map.txt
+
+Or:
+./Manhattan map.txt
+
+-Alexander Wiecking
