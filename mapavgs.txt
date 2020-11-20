@@ -1,0 +1,17 @@
+Euclidean
+
+map1: 0.331s 
+map2: 0.3369s
+map3: 0.9667s
+map4: 0.8153s
+map5: 0.9852s
+map6: 0.5149s
+
+Manhattan
+
+map1: 0.4830s
+map2: 0.7436s
+map3: 0.9363s
+map4: 0.8830s
+map5: 0.8995s
+map6: 0.5352s

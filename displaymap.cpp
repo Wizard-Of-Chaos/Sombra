@@ -75,6 +75,7 @@ DisplayMap::DisplayMap(vector<string> map, int height, int width) : m_map(map), 
     ++h_pos;
     w_pos = 0;
   } //Detailed map should now be filled out in map points.
+  cout << endl;
   cout << "DEBUGGING" << endl;
   cout << "Start X: " << m_start_coords.x() << " Start Y: " << m_start_coords.y() << endl;
   cout << "End X: " << m_end_coords.x() << " End Y: " << m_end_coords.y() << endl;

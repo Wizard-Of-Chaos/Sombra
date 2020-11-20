@@ -105,6 +105,9 @@ int main (int argc, char** argv)
   struct rusage usage;
   struct timeval start, end;
 
+  getrusage(RUSAGE_SELF, &usage);
+  start = usage.ru_stime;
+
   bool is_start = false;
   bool is_fin = false;
   ifstream checker(argv[1]);
@@ -125,20 +128,23 @@ int main (int argc, char** argv)
     heur = 'E';
   if (name == "./Manhattan")
     heur = 'M';
-  
-  getrusage(RUSAGE_SELF, &usage);
-  start = usage.ru_stime;
+ 
+  for(int x = 1; x < 101; x++)
+  {
+    printf("\nTest %d", x);
 
-  DisplayMap view = get_map(argv[1]);
-  view.print();
-  view.show_start_obstacles();
-  view.show_finish_obstacles();
+    DisplayMap view = get_map(argv[1]); 
+    view.print();
+    view.show_start_obstacles();
+    view.show_finish_obstacles();
 
-  a_star(view, heur);
+    a_star(view, heur);
+  }
 
   getrusage(RUSAGE_SELF, &usage);
   end = usage.ru_stime;
-
+  
   printf("Started at: %ld.%lds\n", start.tv_sec, start.tv_usec);
   printf("Ended at: %ld.%lds\n", end.tv_sec, end.tv_usec);
+  printf("AVG: %ld.%lds\n", (end.tv_sec - start.tv_sec), (end.tv_usec - start.tv_usec));
 }
