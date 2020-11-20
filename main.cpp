@@ -6,6 +6,9 @@
 #include "min_heap.h"
 #include <map>
 #include <cmath>
+#include <sys/time.h>
+#include <sys/resource.h>
+
 using namespace std;
 
 DisplayMap get_map(string filename)
@@ -38,6 +41,7 @@ double heuristic(Node* start, Node* end, char type)
 
 void a_star(DisplayMap& cur_map, char heur_type)
 {
+
   MinHeap open_set;
   map<Node*, bool> closed_set;
   open_set.add(cur_map.nstart());
@@ -98,6 +102,9 @@ int main (int argc, char** argv)
     return -1;
   }
 
+  struct rusage usage;
+  struct timeval start, end;
+
   bool is_start = false;
   bool is_fin = false;
   ifstream checker(argv[1]);
@@ -119,9 +126,19 @@ int main (int argc, char** argv)
   if (name == "./Manhattan")
     heur = 'M';
   
+  getrusage(RUSAGE_SELF, &usage);
+  start = usage.ru_stime;
+
   DisplayMap view = get_map(argv[1]);
   view.print();
   view.show_start_obstacles();
   view.show_finish_obstacles();
+
   a_star(view, heur);
+
+  getrusage(RUSAGE_SELF, &usage);
+  end = usage.ru_stime;
+
+  printf("Started at: %ld.%lds\n", start.tv_sec, start.tv_usec);
+  printf("Ended at: %ld.%lds\n", end.tv_sec, end.tv_usec);
 }
