@@ -49,18 +49,29 @@ DisplayMap::DisplayMap(vector<string> map, int height, int width) : m_map(map), 
   int w_pos = 0;
   for(string s : map) {
     vector<MapPoint> line;
+    vector<Node*> nline;
     for(char c : s) {
       MapPoint p(w_pos, h_pos, c);
+      Node* n = new Node;
+      n->x = w_pos;
+      n->y = h_pos;
+      n->gscore = 99999;
+      n->fscore = 99999;
+      n->previous = nullptr;
+      nline.push_back(n);
       line.push_back(p);
       if (c == 'S') {
         m_start_coords = p;
+        m_start = n;
       }
       if (c == 'F') {
         m_end_coords = p;
+        m_end = n;
       }
       ++w_pos;
     } //Individual characters in string handled.
     m_map_details.push_back(line);
+    m_nodes.push_back(nline);
     ++h_pos;
     w_pos = 0;
   } //Detailed map should now be filled out in map points.
@@ -89,6 +100,25 @@ MapPoint DisplayMap::get_point(int x, int y)
         return p;
     }
   }
+}
+
+Node* DisplayMap::get_node(int x, int y)
+{
+  for (vector<Node*> v : m_nodes) {
+    for (Node* n : v) {
+      if (n->x == x && n->y == y) return n;
+    }
+  }
+}
+
+vector<Node*> DisplayMap::node_neighbors(Node* n)
+{
+  vector<Node*> neighbors;
+  if(inbounds(n->x-1, n->y)) neighbors.push_back(get_node(n->x-1, n->y));
+  if(inbounds(n->x+1, n->y)) neighbors.push_back(get_node(n->x+1, n->y));
+  if(inbounds(n->x, n->y-1)) neighbors.push_back(get_node(n->x, n->y-1));
+  if(inbounds(n->x, n->y+1)) neighbors.push_back(get_node(n->x, n->y+1));
+  return neighbors;
 }
 
 vector<MapPoint> DisplayMap::neighbors(MapPoint point) //Why the hell wasn't this a method from the start? Christ am I dumb.
@@ -153,6 +183,15 @@ MapPoint DisplayMap::end()
   return m_end_coords;
 }
 
+Node* DisplayMap::nstart()
+{
+  return m_start;
+}
+
+Node* DisplayMap::nend()
+{
+  return m_end;
+}
 void DisplayMap::edit_point(int x, int y, char c)
 { 
   for (vector<MapPoint>& v : m_map_details) {
@@ -163,3 +202,13 @@ void DisplayMap::edit_point(int x, int y, char c)
   }
 }
 
+vector<Node*> DisplayMap::node_dump()
+{
+  vector<Node*> nodes;
+  for(vector<Node*> v : m_nodes) {
+    for(Node* n : v) {
+      nodes.push_back(n);
+    }
+  }
+  return nodes;
+}

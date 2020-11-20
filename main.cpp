@@ -26,58 +26,49 @@ DisplayMap get_map(string filename)
 	return map;
 }
 
-double heuristic(MapPoint start, MapPoint end)
+double heuristic(Node* start, Node* end)
 {
-  int dx = abs(start.x() - end.x());
-  int dy = abs(start.y() - end.y());
+  int dx = abs(start->x - end->x);
+  int dy = abs(start->y - end->y);
   return sqrt(pow((double)dx, 2.0) + pow((double)dy, 2.0));
 }
 
 void a_star(DisplayMap& cur_map)
 {
-  vector<MapPoint> closed_set;
   MinHeap open_set;
-  Node* start = new Node;
-  MapPoint p = cur_map.start();
-  start->x = p.x();
-  start->y = p.y();
-  start->previous = start;
-  start->gscore = 0;
-  start->fscore = heuristic(cur_map.start(), cur_map.end()); // G-score here is 0 so...
-  open_set.add(start);
-  //I want everyone to mark that I took a deep breath before starting to write the rest here
-  //IT BEGINS
+  map<Node*, bool> closed_set;
+  open_set.add(cur_map.nstart());
+  cur_map.nstart()->gscore = 0;
+  cur_map.nstart()->fscore = heuristic(cur_map.nstart(), cur_map.nend());
+  for(Node* n : cur_map.node_dump()) {
+    closed_set[n] = false;
+  }
   Node* winner = nullptr;
+
   while(open_set.size() != 0) {
     Node* cur = open_set.min();
-    if(cur_map.end().x() == cur->x && cur_map.end().y() == cur->y) {
+    if(cur == cur_map.nend()) {
       winner = cur->previous; //Establishes the correct path
       break;
     }
-    open_set.pop();
 
-    MapPoint translated = cur_map.get_point(cur->x, cur->y); //Gets the map thing associated with the current node.
-    vector<MapPoint> cur_neighbors = cur_map.neighbors(translated); //Gets the neighbors from the current node.
-    closed_set.push_back(translated);
-    vector<Node*> neighbor_nodes;
-    for (MapPoint neighbor : cur_neighbors) {
-         if(neighbor.type() == '#') continue;
-         bool checker = false;
-         for(MapPoint check : closed_set) {
-           if (neighbor.x() == check.x() && neighbor.y() == check.y());
-           bool checker = true;
-           break;
-         }
-         if(checker == true) continue;
-         Node* neigh = new Node;
-         neigh->x = neighbor.x();
-         neigh->y = neighbor.y();
-         neigh->previous = cur;
-         neigh->gscore = cur->gscore + 1;
-         neigh->fscore = neigh->gscore + heuristic(neighbor, cur_map.end());
-         open_set.add(neigh);
+    open_set.pop();
+    vector<Node*> cur_neighbors = cur_map.node_neighbors(cur); //Gets the neighbors from the current node.
+    closed_set[cur] = true;
+
+    for (Node* neighbor : cur_neighbors) {
+      if(cur_map.get_point(neighbor->x, neighbor->y).type() == '#' || closed_set[neighbor] == true) {
+        continue;
+      }
+      if(cur->gscore +1 < neighbor->gscore) {
+        neighbor->gscore = cur->gscore + 1;
+        neighbor->fscore = neighbor->gscore + heuristic(neighbor, cur_map.nend());
+        neighbor->previous = cur;
+        open_set.add(neighbor);
+      }
     }
   }
+
   if (winner == nullptr) {
     cur_map.print();
     cout << "No path was found." << endl;
@@ -85,7 +76,7 @@ void a_star(DisplayMap& cur_map)
   }
   Node* tracker = winner->previous;
   cur_map.edit_point(winner->x, winner->y, '*');
-  while(tracker != start) {
+  while(tracker != cur_map.nstart()) {
     cur_map.edit_point(tracker->x, tracker->y, '*');
     tracker = tracker->previous;
   }

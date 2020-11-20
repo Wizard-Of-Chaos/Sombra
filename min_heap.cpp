@@ -14,16 +14,19 @@ Node* MinHeap::min()
 
 void MinHeap::add(Node* n)
 {
-  m_array.push_back(n); /*
+  for(Node* check : m_array) {
+    if(check == n) return;
+  }
+  m_array.push_back(n); 
   for (int i = 0; i < m_array.size(); ++i) {
     for (int j = 0; j <= i; ++j) {
-      if(m_array[j]->fscore < m_array[i]->fscore) {
+      if(m_array[j]->fscore > m_array[i]->fscore) {
         Node* temp = m_array[j];
         m_array[j] = m_array[i];
-        m_array[i] = temp; //Sorting for idiots!
+        m_array[i] = temp; //Awful sort
       }
     }
-  } */
+  } 
   //Add function sorts list in ascending order by fscore
 }
 
