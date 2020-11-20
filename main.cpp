@@ -77,14 +77,18 @@ void a_star(DisplayMap& cur_map, char heur_type)
     cout << "No path was found." << endl;
     return;
   }
+  int count = 0;
   Node* tracker = winner->previous;
   cur_map.edit_point(winner->x, winner->y, '*');
+  count += 1;
   while(tracker != cur_map.nstart()) {
     cur_map.edit_point(tracker->x, tracker->y, '*');
     tracker = tracker->previous;
+    count++;
   }
   cur_map.print();
   cout << "Path found." << endl;
+  cout << "Shortest path: " << count << endl;
 }
 
 int main (int argc, char** argv) 
