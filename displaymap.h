@@ -18,6 +18,7 @@ class MapPoint
     int x();
     int y();
     char type();
+    void set_type(char c);
 };
 
 class DisplayMap
@@ -32,9 +33,14 @@ class DisplayMap
   public:
     DisplayMap(std::vector<std::string> map, int height, int width);
     ~DisplayMap();
+    bool inbounds(int x, int y);
     std::vector<MapPoint> neighbors(MapPoint point);
     void show_start_obstacles();
     void show_finish_obstacles();
+    MapPoint start();
+    MapPoint end();
+    MapPoint get_point(int x, int y);
+    void edit_point(int x, int y, char c);
     void print();
 
 };

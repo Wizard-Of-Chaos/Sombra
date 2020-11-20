@@ -18,7 +18,8 @@ class MinHeap {
     std::vector<Node*> m_array;
   public:
     MinHeap();
-    void add (Node* n);
+    void add(Node* n);
+    void remove(Node* n);
     Node* min();
     void print() const;
     int size() const;

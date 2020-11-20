@@ -36,6 +36,11 @@ char MapPoint::type()
   return m_type;
 }
 
+void MapPoint::set_type(char c)
+{
+  m_type = c;
+}
+
 //----------------DisplayMap functions-------------------
 
 DisplayMap::DisplayMap(vector<string> map, int height, int width) : m_map(map), m_height(height), m_width(width)
@@ -69,22 +74,38 @@ DisplayMap::~DisplayMap()
   //Yeah, definitely habit.
 }
 
+bool DisplayMap::inbounds(int x, int y)
+{
+  if (x < 0 || x >= m_width) return false;
+  if (y < 0 || y >= m_height) return false;
+  return true;
+}
+
+MapPoint DisplayMap::get_point(int x, int y)
+{
+  for (vector<MapPoint> v : m_map_details) {
+    for ( MapPoint p : v) {
+      if (p.x() == x && p.y() == y)
+        return p;
+    }
+  }
+}
 
 vector<MapPoint> DisplayMap::neighbors(MapPoint point) //Why the hell wasn't this a method from the start? Christ am I dumb.
 {
   vector<MapPoint> neighbors;
-  if (point.x() > 0) {
-    neighbors.push_back(m_map_details[point.y()][point.x() - 1]);
+  if(inbounds(point.x()-1, point.y())) {
+   neighbors.push_back(get_point(point.x()-1, point.y()));
   }
-  if (point.x() < m_map[0].length()) {
-    neighbors.push_back(m_map_details[point.y()][point.x() + 1]);
-  } 
-  if (point.y() > 0) {
-    neighbors.push_back(m_map_details[point.y() - 1][point.x()]);
+  if(inbounds(point.x()+1, point.y())) {
+   neighbors.push_back(get_point(point.x()+1, point.y()));
   }
-  if (point.y() < m_map.size()) {
-    neighbors.push_back(m_map_details[point.y() + 1][point.x()]);
-  	}
+  if(inbounds(point.x(), point.y()-1)) {
+   neighbors.push_back(get_point(point.x(), point.y()-1));
+  }
+  if(inbounds(point.x(), point.y()+1)) {
+   neighbors.push_back(get_point(point.x(), point.y()+1));
+  }
   return neighbors;
 }
 
@@ -113,9 +134,32 @@ void DisplayMap::show_finish_obstacles()
 
 void DisplayMap::print()
 {
-  for (string s : m_map) {
-    cout << s << endl;
+  for (vector<MapPoint> v : m_map_details) {
+    for( MapPoint p : v) {
+      cout << p.type();
+    }
+    cout << endl;
   }
   cout << "Height / Width: " << m_height << " " << m_width << endl;
+}
+
+MapPoint DisplayMap::start()
+{
+  return m_start_coords;
+}
+
+MapPoint DisplayMap::end()
+{
+  return m_end_coords;
+}
+
+void DisplayMap::edit_point(int x, int y, char c)
+{ 
+  for (vector<MapPoint>& v : m_map_details) {
+    for ( MapPoint& p : v) {
+      if (p.x() == x && p.y() == y)
+        p.set_type(c);
+    }
+  }
 }
 

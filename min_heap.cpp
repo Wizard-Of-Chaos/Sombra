@@ -31,6 +31,16 @@ void MinHeap::add(Node* n)
   //Add function sorts list in ascending order by fscore
 }
 
+void MinHeap::remove(Node* n)
+{
+  for (int i = 0; i < m_array.size(); ++i) {
+    if (m_array[i] == n) {
+      m_array.erase(m_array.begin() + i);
+      return;
+    }
+  }
+}
+
 void MinHeap::print() const
 {
   for(Node* n : m_array) {
