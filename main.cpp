@@ -35,7 +35,7 @@ double heuristic(MapPoint start, MapPoint end)
 
 void a_star(DisplayMap& cur_map)
 {
-  map<Node*, bool> closed_set;
+  vector<MapPoint> closed_set;
   MinHeap open_set;
   Node* start = new Node;
   MapPoint p = cur_map.start();
@@ -54,14 +54,21 @@ void a_star(DisplayMap& cur_map)
       winner = cur->previous; //Establishes the correct path
       break;
     }
-    open_set.remove(cur);
-    closed_set[cur] = true;
+    open_set.pop();
 
     MapPoint translated = cur_map.get_point(cur->x, cur->y); //Gets the map thing associated with the current node.
     vector<MapPoint> cur_neighbors = cur_map.neighbors(translated); //Gets the neighbors from the current node.
+    closed_set.push_back(translated);
     vector<Node*> neighbor_nodes;
     for (MapPoint neighbor : cur_neighbors) {
-         //if(neighbor.type() == '#') continue;
+         if(neighbor.type() == '#') continue;
+         bool checker = false;
+         for(MapPoint check : closed_set) {
+           if (neighbor.x() == check.x() && neighbor.y() == check.y());
+           bool checker = true;
+           break;
+         }
+         if(checker == true) continue;
          Node* neigh = new Node;
          neigh->x = neighbor.x();
          neigh->y = neighbor.y();

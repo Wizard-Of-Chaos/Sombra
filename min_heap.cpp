@@ -9,16 +9,12 @@ MinHeap::MinHeap()
 
 Node* MinHeap::min()
 {
-  Node* tiny = m_array[0];
-  for (Node* n : m_array) {
-    if (n->fscore < tiny->fscore) tiny = n;
-  }
-  return tiny;
+  return m_array[0];
 }
 
 void MinHeap::add(Node* n)
 {
-  m_array.push_back(n);
+  m_array.push_back(n); /*
   for (int i = 0; i < m_array.size(); ++i) {
     for (int j = 0; j <= i; ++j) {
       if(m_array[j]->fscore < m_array[i]->fscore) {
@@ -27,7 +23,7 @@ void MinHeap::add(Node* n)
         m_array[i] = temp; //Sorting for idiots!
       }
     }
-  }
+  } */
   //Add function sorts list in ascending order by fscore
 }
 
@@ -39,6 +35,10 @@ void MinHeap::remove(Node* n)
       return;
     }
   }
+}
+void MinHeap::pop()
+{
+  m_array.erase(m_array.begin());
 }
 
 void MinHeap::print() const

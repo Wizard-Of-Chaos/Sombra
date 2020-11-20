@@ -21,6 +21,7 @@ class MinHeap {
     void add(Node* n);
     void remove(Node* n);
     Node* min();
+    void pop();
     void print() const;
     int size() const;
 };
