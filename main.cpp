@@ -54,14 +54,14 @@ void a_star(DisplayMap& cur_map)
       winner = cur->previous; //Establishes the correct path
       break;
     }
-    open_set.remove(cur); //Removes the current node from the open set.
+    open_set.remove(cur);
     closed_set[cur] = true;
 
     MapPoint translated = cur_map.get_point(cur->x, cur->y); //Gets the map thing associated with the current node.
     vector<MapPoint> cur_neighbors = cur_map.neighbors(translated); //Gets the neighbors from the current node.
     vector<Node*> neighbor_nodes;
     for (MapPoint neighbor : cur_neighbors) {
-      if(neighbor.type() != '#') {
+         //if(neighbor.type() == '#') continue;
          Node* neigh = new Node;
          neigh->x = neighbor.x();
          neigh->y = neighbor.y();
@@ -69,7 +69,6 @@ void a_star(DisplayMap& cur_map)
          neigh->gscore = cur->gscore + 1;
          neigh->fscore = neigh->gscore + heuristic(neighbor, cur_map.end());
          open_set.add(neigh);
-      }
     }
   }
   if (winner == nullptr) {
